@@ -197,24 +197,18 @@
         // Function to generate screenshot URL based on the service
         function getScreenshotUrl(websiteUrl) {
             switch(SCREENSHOT_SERVICE) {
-                case 'screenshotone':
-                    // Free tier: https://screenshotone.com
-                    return `https://api.screenshotone.com/take?url=${encodeURIComponent(websiteUrl)}&viewport_width=1200&viewport_height=800&device_scale_factor=1&format=jpg&block_ads=true&block_cookie_banners=true&block_trackers=true`;
-                
                 case 'microlink':
-                    // Free tier: https://microlink.io
-                    return `https://api.microlink.io/?url=${encodeURIComponent(websiteUrl)}&screenshot=true&meta=false`;
-                case 'apiflash':
-                    // Requires API key from https://apiflash.com
-                    const apiflashKey = 'YOUR_API_KEY_HERE';
-                    return `https://api.apiflash.com/v1/urltoimage?access_key=${apiflashKey}&url=${encodeURIComponent(websiteUrl)}&width=1200&height=800`;
+                    // Using Thum.io - simple and reliable
+                    return `https://image.thum.io/get/width/1200/crop/800/${websiteUrl}`;
+                
+                case 'screenshotone':
+                    return `https://api.screenshotone.com/take?url=${encodeURIComponent(websiteUrl)}&viewport_width=1200&viewport_height=800&device_scale_factor=1&format=jpg&block_ads=true&block_cookie_banners=true&block_trackers=true`;
                 
                 case 'manual':
                 default:
-                    // Return empty string if using manual screenshots
                     return '';
-            }
         }
+    }
 
         // Template data - Just add the URLs and info!
         const templates = [

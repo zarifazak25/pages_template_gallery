@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Templates</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            border: 2px solid white;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: white;
+            color: #667eea;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+        }
+
+        .template-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .template-card.hidden {
+            display: none;
+        }
+
+        .template-preview {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .template-preview:hover {
+            opacity: 0.9;
+        }
+
+        .template-info {
+            padding: 20px;
+        }
+
+        .template-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 12px;
+        }
+
+        .template-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 4px 12px;
+            background: #e2e8f0;
+            color: #4a5568;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .template-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .btn-preview {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-preview:hover {
+            background: #5568d3;
+        }
+
+        .btn-repo {
+            background: #2d3748;
+            color: white;
+        }
+
+        .btn-repo:hover {
+            background: #1a202c;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Website Templates</h1>
+        
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All Templates</button>
+            <button class="filter-btn" data-filter="one-page">One-Page</button>
+            <button class="filter-btn" data-filter="multi-page">Multi-Page</button>
+            <button class="filter-btn" data-filter="html-css">HTML + CSS</button>
+            <button class="filter-btn" data-filter="html-css-js">HTML + CSS + JS</button>
+        </div>
+
+        <div class="gallery" id="gallery">
+            <!-- Template cards will be generated here -->
+        </div>
+    </div>
+
+    <script>
+        // Screenshot service configuration
+        // Options: 'screenshotone', 'microlink', 'manual'
+        const SCREENSHOT_SERVICE = 'screenshotone';
+        
+        // Function to generate screenshot URL based on the service
+        function getScreenshotUrl(websiteUrl) {
+            switch(SCREENSHOT_SERVICE) {
+                case 'screenshotone':
+                    // Free tier: https://screenshotone.com
+                    return `https://api.screenshotone.com/take?url=${encodeURIComponent(websiteUrl)}&viewport_width=1200&viewport_height=800&device_scale_factor=1&format=jpg&block_ads=true&block_cookie_banners=true&block_trackers=true`;
+                
+                case 'microlink':
+                    // Free tier: https://microlink.io
+                    return `https://api.microlink.io/?url=${encodeURIComponent(websiteUrl)}&screenshot=true&meta=false&embed=screenshot.url`;
+                
+                case 'apiflash':
+                    // Requires API key from https://apiflash.com
+                    const apiflashKey = 'YOUR_API_KEY_HERE';
+                    return `https://api.apiflash.com/v1/urltoimage?access_key=${apiflashKey}&url=${encodeURIComponent(websiteUrl)}&width=1200&height=800`;
+                
+                case 'manual':
+                default:
+                    // Return empty string if using manual screenshots
+                    return '';
+            }
+        }
+
+        // Template data - Just add the URLs and info!
+        const templates = [
+            {
+                title: "Modern Portfolio",
+                previewUrl: "https://yourusername.github.io/modern-portfolio/",
+                repoUrl: "https://github.com/yourusername/modern-portfolio",
+                pageType: "one-page",
+                techStack: "html-css-js",
+                // Optional: override with custom screenshot
+                customImage: ""
+            },
+            {
+                title: "Business Landing",
+                previewUrl: "https://yourusername.github.io/business-landing/",
+                repoUrl: "https://github.com/yourusername/business-landing",
+                pageType: "one-page",
+                techStack: "html-css"
+            },
+            {
+                title: "Blog Template",
+                previewUrl: "https://yourusername.github.io/blog-template/",
+                repoUrl: "https://github.com/yourusername/blog-template",
+                pageType: "multi-page",
+                techStack: "html-css-js"
+            },
+            {
+                title: "Simple Portfolio",
+                previewUrl: "https://yourusername.github.io/simple-portfolio/",
+                repoUrl: "https://github.com/yourusername/simple-portfolio",
+                pageType: "one-page",
+                techStack: "html-css"
+            },
+            {
+                title: "Restaurant Site",
+                previewUrl: "https://yourusername.github.io/restaurant-site/",
+                repoUrl: "https://github.com/yourusername/restaurant-site",
+                pageType: "multi-page",
+                techStack: "html-css"
+            },
+            {
+                title: "Agency Website",
+                previewUrl: "https://yourusername.github.io/agency-website/",
+                repoUrl: "https://github.com/yourusername/agency-website",
+                pageType: "multi-page",
+                techStack: "html-css-js"
+            }
+        ];
+
+        // Generate template cards
+        function generateCards() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+
+            templates.forEach(template => {
+                const card = document.createElement('div');
+                card.className = 'template-card';
+                card.dataset.pageType = template.pageType;
+                card.dataset.techStack = template.techStack;
+
+                const pageTypeLabel = template.pageType === 'one-page' ? 'One-Page' : 'Multi-Page';
+                const techStackLabel = template.techStack === 'html-css' ? 'HTML + CSS' : 'HTML + CSS + JS';
+
+                // Use custom image if provided, otherwise generate screenshot URL
+                const imageUrl = template.customImage || getScreenshotUrl(template.previewUrl);
+                
+                // Fallback placeholder if no screenshot service is configured
+                const finalImageUrl = imageUrl || `https://via.placeholder.com/400x250/667eea/ffffff?text=${encodeURIComponent(template.title)}`;
+
+                card.innerHTML = `
+                    <img src="${finalImageUrl}" 
+                         alt="${template.title}" 
+                         class="template-preview" 
+                         onclick="window.open('${template.previewUrl}', '_blank')"
+                         onerror="this.src='https://via.placeholder.com/400x250/667eea/ffffff?text=Preview+Not+Available'">
+                    <div class="template-info">
+                        <h3 class="template-title">${template.title}</h3>
+                        <div class="template-tags">
+                            <span class="tag">${pageTypeLabel}</span>
+                            <span class="tag">${techStackLabel}</span>
+                        </div>
+                        <div class="template-actions">
+                            <a href="${template.previewUrl}" target="_blank" class="action-btn btn-preview">View Template</a>
+                            <a href="${template.repoUrl}" target="_blank" class="action-btn btn-repo">GitHub Repo</a>
+                        </div>
+                    </div>
+                `;
+
+                gallery.appendChild(card);
+            });
+        }
+
+        // Filter functionality
+        function filterTemplates(filter) {
+            const cards = document.querySelectorAll('.template-card');
+            
+            cards.forEach(card => {
+                if (filter === 'all') {
+                    card.classList.remove('hidden');
+                } else if (filter === 'one-page' || filter === 'multi-page') {
+                    if (card.dataset.pageType === filter) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                } else if (filter === 'html-css' || filter === 'html-css-js') {
+                    if (card.dataset.techStack === filter) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        // Filter button event listeners
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+                // Filter templates
+                filterTemplates(this.dataset.filter);
+            });
+        });
+
+        // Initialize
+        generateCards();
+    </script>
+</body>
+</html>

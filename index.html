@@ -203,8 +203,7 @@
                 
                 case 'microlink':
                     // Free tier: https://microlink.io
-                    return `https://api.microlink.io/?url=${encodeURIComponent(websiteUrl)}&screenshot=true&meta=false&embed=screenshot.url`;
-                
+                    return `https://api.microlink.io/?url=${encodeURIComponent(websiteUrl)}&screenshot=true&meta=false`;
                 case 'apiflash':
                     // Requires API key from https://apiflash.com
                     const apiflashKey = 'YOUR_API_KEY_HERE';

@@ -192,21 +192,21 @@
     <script>
         // Screenshot service configuration
         // Options: 'screenshotone', 'microlink', 'manual'
-        const SCREENSHOT_SERVICE = 'microlink';
+        const SCREENSHOT_SERVICE = 'screenshotone';
         
         // Function to generate screenshot URL based on the service
         function getScreenshotUrl(websiteUrl) {
-            switch(SCREENSHOT_SERVICE) {
-                case 'microlink':
-                    // Using Thum.io - simple and reliable
-                    return `https://image.thum.io/get/width/1200/crop/800/${websiteUrl}`;
-                
-                case 'screenshotone':
-                    return `https://api.screenshotone.com/take?url=${encodeURIComponent(websiteUrl)}&viewport_width=1200&viewport_height=800&device_scale_factor=1&format=jpg&block_ads=true&block_cookie_banners=true&block_trackers=true`;
-                
-                case 'manual':
-                default:
-                    return '';
+    switch(SCREENSHOT_SERVICE) {
+        case 'screenshotone':
+            const accessKey = 'FrIxxw9KNxMkxA'; // Paste your key here
+            return `https://api.screenshotone.com/take?access_key=${accessKey}&url=${encodeURIComponent(websiteUrl)}&viewport_width=1200&viewport_height=800&device_scale_factor=1&format=jpg&block_ads=true&block_cookie_banners=true&block_trackers=true`;
+        
+        case 'microlink':
+            return `https://api.pagepeeker.com/v2/thumbs.php?size=l&url=${encodeURIComponent(websiteUrl)}`;
+        
+        case 'manual':
+        default:
+            return '';
     }
 }
 
@@ -279,6 +279,20 @@
             },
             {
                 title: "Personal Website Template 10",
+                previewUrl: "https://zarifazak25.github.io/personalwebsite10/",
+                repoUrl: "https://github.com/zarifazak25/personalwebsite10",
+                pageType: "one-page",
+                techStack: "html-css"
+            },
+            {
+                title: "Personal Website Template 11",
+                previewUrl: "https://github.com/rajaprerak/rajaprerak.github.io",
+                repoUrl: "https://rajaprerak.github.io/",
+                pageType: "multi-page",
+                techStack: "html-css-js"
+            },
+            {
+                title: "Personal Website Template 12",
                 previewUrl: "https://zarifazak25.github.io/personalwebsite10/",
                 repoUrl: "https://github.com/zarifazak25/personalwebsite10",
                 pageType: "one-page",
